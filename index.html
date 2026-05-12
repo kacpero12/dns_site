@@ -76,6 +76,40 @@
   width: 40%;
 }
 
+.button-18:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.button-18,
+.button-18:focus {
+  user-select: auto;
+}
+
+.button-18:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.button-18:disabled {
+  cursor: auto;
+}
+
+.button-18:active {
+  border-width: 4px 0 0;
+  background: none;
+}
+
 .button-19:after {
   background-clip: padding-box;
   background-color: #1CB0F6;
