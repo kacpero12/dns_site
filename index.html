@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPA Signers</title>
+    <style>
+        body{
+            background-color: #272b44;
+            color: #FFFFFF;
+            text-align: center;
+            align-items: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+
+.button-19 {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 90%;
+}
+
+.button-18 {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 40%;
+}
+
+.button-19:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.button-19,
+.button-19:focus {
+  user-select: auto;
+}
+
+.button-19:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.button-19:disabled {
+  cursor: auto;
+}
+
+.button-19:active {
+  border-width: 4px 0 0;
+  background: none;
+}
+    </style>
+    
+</head>
+<body>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const value = params.get("isUsingDNS");
+        if (value==="1"){
+            document.body.innerHTML=`
+            <h1>Online Signers:</h1>
+    <br>
+    <a href="https://applejr.net/"><button class="button-19" role="button">applejr.net (easy)</button></a>
+    <br>
+    <br>
+    <a href="https://quill.getzeus.app"><button class="button-19" role="button">quill (harder)</button></a>
+    <br>
+    <br>
+    <h1>Free Certeficates:</h1>
+    <br>
+    <a href="https://novadev.vip/resources/certificates/"><button class="button-19" role="button">Nova</button></a>
+            `
+        } else {
+            document.body.innerHTML=`
+            <h1>Hello!</h1><br><br><h2>This website was meant for the webclip.</h2><br><h2>Press the button bellow to continue to the webclip page</h2><br><br><br><a href="?isUsingDNS=1"><button class="button-18" role="button">Continue To The Page</button></a>
+            `
+        }
+    </script>
+</body>
+</html>
