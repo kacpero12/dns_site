@@ -143,6 +143,12 @@
   border-width: 4px 0 0;
   background: none;
 }
+        #main-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
     
 </head>
@@ -150,7 +156,13 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const value = params.get("isUsingDNS");
+        var value2 = params.get("iframedata");
+        if(value2!==""&&value2!==null) {value2=encodeURI(value2)}
+
         if (value==="1"){
+            if (value2!==""&&value2!==null) {
+                document.body.innerHTML=`<iframe id="main-iframe" src="`+value2+`"></iframe>`
+            } else {
             document.body.innerHTML=`
             <h1>Online Signers:</h1>
     <br>
@@ -160,10 +172,10 @@
     <a href="https://quill.getzeus.app"><button class="button-19" role="button">quill (harder)</button></a>
     <br>
     <br>
-    <h1>Free Certificates:</h1>
+    <h1>Free Certeficates:</h1>
     <br>
     <a href="https://novadev.vip/resources/certificates/"><button class="button-19" role="button">Nova</button></a>
-            `
+            `}
         } else {
             document.body.innerHTML=`
             <h1>Hello!</h1><br><br><h2>This website was meant for the webclip.</h2><br><h2>Press the button bellow to continue to the webclip page</h2><br><br><br><a href="?isUsingDNS=1"><button class="button-18" role="button">Continue To The Page</button></a>
