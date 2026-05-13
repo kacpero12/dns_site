@@ -161,7 +161,26 @@
 
         if (value==="1"){
             if (value2!==""&&value2!==null) {
-                document.body.innerHTML=`<iframe id="main-iframe" src="`+value2+`"></iframe>`
+                document.body.innerHTML = `
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden; 
+            }
+            #main-iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+        </style>
+        <iframe id="main-iframe" src="${value2}" allow="fullscreen"></iframe>
+    `
             } else {
             document.body.innerHTML=`
             <h1>Online Signers:</h1>
