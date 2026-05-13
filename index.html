@@ -170,6 +170,7 @@
                 width: 100%;
                 overflow: hidden; 
             }
+            
             #main-iframe {
                 position: absolute;
                 top: 0;
@@ -179,7 +180,7 @@
                 border: none;
             }
         </style>
-        <iframe id="main-iframe" src="${value2}" allow="fullscreen"></iframe>
+        <iframe id="main-iframe" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-storage-access-by-user-activation" style="width:100vw;height:100vh;" src="${value2}" allow="fullscreen"></iframe>
     `
             } else {
             document.body.innerHTML=`
