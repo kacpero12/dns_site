@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>DNS Profile | Create</title>
+    <title>IPA Signers</title>
     <style>
         body{
             background-color: #272b44;
@@ -146,300 +146,64 @@
   border-width: 4px 0 0;
   background: none;
 }
-
-.btn-pos {
-    position: relative;
-    top: 40vh;
-}
-
-.hidden {
-    visibility:hidden;
-}
-.visible{
-    visibility:visible;
-}
-
-.checkbox {
-    width:18px;
-    height:18px;
-}
-
-        
+        #main-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
     
 </head>
 <body>
-    <h2>Simple Profile Creator</h2>
-    <br>
-    <span>Profile Name: </span><input id="pna" style="width: 20vw;" placeholder="IPA Anti-Revoke"></input>
-    <br>
-    <br>
-    <span>DNS URL (Must be DOH): </span><input id="durl" style="width: 20vw;" placeholder="DNS over HTTPS"></input>
-    <br>
-    <br>
-    <span>Use Web Clip: </span><input id="chk" class="checkbox" type="checkbox"></input>
-    <br>
-    <br>
-    <span class="work hidden">WebClip URL: </span><input id="wurl" style="width: 20vw;" checked="0" class="work hidden" placeholder="https://example.com"></input>
-    <br>
-    <br>
-    <span class="work hidden">WebClip Name: </span><input id="wna" style="width: 20vw;" checked="0" class="work hidden" placeholder="Web Clip"></input>
-    <br>
-    <br>
-    <span class="work hidden">Removable Webclip: </span><input id="chk2" class="work hidden checkbox" checked="1" type="checkbox"></input>
-    <br>
-    <br>
-    <span class="work hidden">Icon (180x180, 512x512): </span><input id="iconfile" class="work hidden" accept="image/png" type="file"></input>
-    <br>
-    <br>
-    <br>
-    <br>
-    <button id="ps" class="button-19">Create DNS Profile</button>
-    <br>
-    <br>
-    <br>
-    <h3 id="status"></h3>
     <script>
-        var chk=document.getElementById("chk")
-        var chk2=document.getElementById("chk2")
-        var create=document.getElementById("ps")
+        const params = new URLSearchParams(window.location.search);
+        const value = params.get("isUsingDNS");
+        var value2 = params.get("iframedata");
+        if(value2!==""&&value2!==null) {value2=encodeURI(value2)}
 
-        var wurl=document.getElementById("wurl")
-        var durl=document.getElementById("durl")
-        var pna=document.getElementById("pna")
-        var wna=document.getElementById("wna")
-
-        var statuss=document.getElementById("status")
-
-        var files=document.getElementById("iconfile")
-        var webp=document.getElementsByClassName("work")
-        var imageb64=""
-        var webclipon=false
-        var removableon=true
-
-        chk.addEventListener("input", function(ev){
-            webclipon=!webclipon
-            for (let index = 0; index < webp.length; index++) {
-                const element = webp[index];
-                element.classList.toggle("hidden")
+        if (value==="1"){
+            if (value2!==""&&value2!==null) {
+                document.body.innerHTML = `
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden; 
             }
-        })
-        chk2.addEventListener("input", function(ev){
-            removableon=!removableon
-        })
-
-        files.addEventListener("change",function(){
-            var file=this.files[0]
-            var reader=new FileReader()
-
-            reader.onloadend = () => {
-                imageb64 = reader.result.split(',')[1]
-                console.log(imageb64)
+            
+            #main-iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                border: none;
             }
-
-            if (file) reader.readAsDataURL(file)
-        })
-
-        var plist=""
-
-        function downloadProfile(input,name){
-            var b=new Blob([input],{type:"application/x-apple-aspen-config"})
-
-            var a=document.createElement('a')
-
-            a.href=URL.createObjectURL(b)
-            a.download=name
-
-            document.body.appendChild(a)
-            a.click()
-            URL.revokeObjectURL(a.href)
-            document.body.removeChild(a)
-        }
-        
-        create.addEventListener("click",function(){
-            if (durl.value.trim()===""||pna.value.trim()==="") {
-                console.log("test")
-                return statuss.innerText="Please fill out the dns settings."
-            }else{statuss.innerText=""}
-            if (webclipon) {
-                if (wurl.value.trim()!==""&&wna.value.trim()!==""&&imageb64!==""){
-                    plist=`<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-
-	<key>PayloadDisplayName</key>
-	<string>
-        ${pna.value.trim()}
-    </string>
-
-	<key>PayloadIdentifier</key>
-	<string>
-        pl.kacpero12.generated.profile.${crypto.randomUUID()}
-    </string>
-
-	<key>PayloadType</key>
-	<string>Configuration</string>
-
-	<key>PayloadUUID</key>
-	<string>
-        ${crypto.randomUUID()}
-    </string>
-
-	<key>PayloadVersion</key>
-	<integer>1</integer>
-
-	<key>PayloadContent</key>
-	<array>
-
-		<dict>
-            <key>PayloadDisplayName</key>
-            <string>DNS</string>
-			<key>PayloadIdentifier</key>
-			<string>
-                pl.kacpero12.generated.dns.
-            </string>
-
-			<key>PayloadType</key>
-			<string>com.apple.dnsSettings.managed</string>
-
-			<key>PayloadUUID</key>
-			<string>
-                ${crypto.randomUUID()}
-            </string>
-
-			<key>PayloadVersion</key>
-			<integer>1</integer>
-
-			<key>DNSSettings</key>
-			<dict>
-				<key>DNSProtocol</key>
-				<string>HTTPS</string>
-
-				<key>ServerURL</key>
-				<string>
-                    ${durl.value.trim()}
-                </string>
-			</dict>
-		</dict>
-
-		<dict>
-            <key>PayloadDisplayName</key>
-            <string>
-                ${wna.value.trim()}
-            </string>
-			<key>FullScreen</key>
-			<true/>
-
-			<key>IsRemovable</key>
-			<${removableon}/>
-
-
-			<key>PayloadIdentifier</key>
-			<string>
-                pl.kacpero12.webclips.${crypto.randomUUID()}
-            </string>
-
-			<key>PayloadType</key>
-			<string>com.apple.webClip.managed</string>
-
-
-			<key>PayloadUUID</key>
-			<string>
-                ${crypto.randomUUID()}
-            </string>
-
-			<key>PayloadVersion</key>
-			<integer>1</integer>
-
-			<key>URL</key>
-			<string>
-                ${wurl.value.trim()}
-            </string>
-
-			<key>Icon</key>
-			<data>
-                ${imageb64}
-			</data>
-
-			<key>Precomposed</key>
-			<true/>
-		</dict>
-
-	</array>
-</dict>
-</plist>`
-                    downloadProfile(plist,`${pna.value.trim()}.mobileconfig`)
-                } else {
-                    statuss.innerText="Please fill out the webclip settings."
-                }
+        </style>
+        <iframe id="main-iframe" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-storage-access-by-user-activation" style="width:100vw;height:100vh;" src="${value2}" allow="fullscreen"></iframe>
+    `
             } else {
-                plist=`<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-
-	<key>PayloadDisplayName</key>
-	<string>
-        ${pna.value.trim()}
-    </string>
-
-	<key>PayloadIdentifier</key>
-	<string>
-        pl.kacpero12.generated.profile.${crypto.randomUUID()}
-    </string>
-
-	<key>PayloadType</key>
-	<string>Configuration</string>
-
-	<key>PayloadUUID</key>
-	<string>
-        ${crypto.randomUUID()}
-    </string>
-
-	<key>PayloadVersion</key>
-	<integer>1</integer>
-
-	<key>PayloadContent</key>
-	<array>
-
-		<dict>
-            <key>PayloadDisplayName</key>
-            <string>DNS</string>
-			<key>PayloadIdentifier</key>
-			<string>
-                pl.kacpero12.generated.dns.
-            </string>
-
-			<key>PayloadType</key>
-			<string>com.apple.dnsSettings.managed</string>
-
-			<key>PayloadUUID</key>
-			<string>
-                ${crypto.randomUUID()}
-            </string>
-
-			<key>PayloadVersion</key>
-			<integer>1</integer>
-
-			<key>DNSSettings</key>
-			<dict>
-				<key>DNSProtocol</key>
-				<string>HTTPS</string>
-
-				<key>ServerURL</key>
-				<string>
-                    ${durl.value.trim()}
-                </string>
-			</dict>
-		</dict>
-
-	</array>
-</dict>
-</plist>`
-            }
-        })
-
+            document.body.innerHTML=`
+            <h1>Online Signers:</h1>
+    <br>
+    <a href="?isUsingDNS=1&iframedata=https://applejr.net/"><button class="button-19" role="button">applejr.net (easy)</button></a>
+    <br>
+    <br>
+    <a href="?isUsingDNS=1&iframedata=https://quill.getzeus.app"><button class="button-19" role="button">quill (harder)</button></a>
+    <br>
+    <br>
+    <h1>Free Certeficates:</h1>
+    <br>
+    <a href="?isUsingDNS=1&iframedata=https://novadev.vip/resources/certificates/"><button class="button-19" role="button">Nova</button></a>
+            `}
+        } else {
+            document.body.innerHTML=`
+            <h1>Hello!</h1><br><br><h2>This website was meant for the webclip.</h2><br><h2>Press the button bellow to continue to the webclip page</h2><br><br><br><a href="?isUsingDNS=1"><button class="button-18" role="button">Continue To The Page</button></a>
+            `
+        }
     </script>
 </body>
 </html>
